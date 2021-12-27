@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 10.15 Mybatis 프레임워크 설정을 위한 파일 :) 꼭 파일명은 root-context.xml 설정된 이름으로 만들기 -->
+
+<configuration>
+	<!-- DB 테이블과 컬럼들을 mapper 매핑을 위한 변수 선언 -->
+	<properties>
+		<!-- * property - name : mapper.xml에서 사용될 이름 - value : DB 테이블 및 컬럼 이름 -->
+		<!-- 오라클 SNOTICE 컬럼이름 적기 :) -->
+		<property name="snotice" value="snotice" />
+		<property name="noticeNo" value="notice_no" />
+		<property name="noticeTitle" value="notice_title" />
+		<property name="noticeContent" value="notice_content" />
+		<property name="userid" value="userid" />
+		<property name="noticeCdate" value="notice_cdate" />
+
+		<!-- 오라클 SQNA 테이블 컬럼이름 적기 :) -->
+		<property name="sqna" value="sqna" />
+		<property name="qnaNo" value="qna_no" />
+		<property name="qnaTitle" value="qna_title" />
+		<property name="qnaContent" value="qna_content" />
+		<property name="userid" value="userid" />
+		<property name="qnaCdate" value="qna_cdate" />
+		<property name="replyCount" value="reply_count" />
+
+		<!-- 오라클 SQNAREPLY 테이블 컬럼이름 적기 :) -->
+		<property name="sqnareply" value="sqnareply" />
+		<property name="replyNo" value="reply_no" />
+		<property name="qnaNo" value="qna_no" />
+		<property name="replyContent" value="reply_content" />
+		<property name="userid" value="userid" />
+		<property name="replyCdate" value="reply_cdate" />
+
+		<!-- 오라클 SMEMBER 테이블 컬럼이름 적기 -->
+		<property name="userid" value="userid" />
+		<property name="password" value="password" />
+		<property name="username" value="username" />
+		<property name="nickname" value="nickname" />
+		<property name="email" value="email" />
+		
+		<!-- 오라클 SPRODUCT 테이블 컬럼이름 적기 -->
+		<property name="sproduct" value="sproduct" />
+		<property name="productNo" value="product_no" />
+		<property name="productName" value="product_name" />
+		<property name="productPrice" value="product_price" />
+		<property name="productImg" value="product_img" />
+		<property name="productThumbimg" value="product_thumbimg" />
+
+
+
+	</properties>
+
+
+	<!-- Underscore 명명법을 Camel 명명법으로 매핑 -->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+
+
+	<!-- typeAliases : mapper.xml의 select 리턴 타입에 들어갈 클래스 경로를 설정 -->
+	<typeAliases>
+		<package name="edu.spring.ex06.domain" />
+	</typeAliases>
+
+
+
+</configuration>

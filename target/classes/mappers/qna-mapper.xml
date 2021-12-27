@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.spring.ex06.QnaMapper">
+	<!-- namespace : 주로 dao 클래스의 sqlSession과 연결하기 위한 키로 사용 -->
+	<!-- DB 쿼리 작성 -->
+	<!-- id : 주로 dao 클래스의 sqlSession의 함수와 연결하기 위해 사용 -->
+
+	<!-- ${key 이름} : mybatis-config.xml의 property - name과 매칭. DB 테이블의 열 
+	#{key 이름} : dao 클래스의 sqlSession에서 전송받은 데이터(입력받은 데이터). (쿼리에서 ?부분) -->
+
+	<!-- mapper 태그 <insert>,<select>,<update>,<delete> dao - sqlSession의 함수(insert, 
+		selectOne, selectList, update, delete)에 맞게 수행되는 태그 -->
+
+	<insert id="insert">
+		insert into ${sqna} (${qnaTitle},${qnaContent},${userid})
+		values (#{qnaTitle,jdbcType=VARCHAR},#{qnaContent,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="select_all" resultType="QnaVO">
+		select * from ${sqna}
+		order by ${qnaNo} desc
+	</select>
+
+	<select id="select_by_qna_no" resultType="QnaVO">
+		select * from ${sqna} where ${qnaNo} = #{qnaNo}
+	</select>
+
+	<update id="update">
+		update ${sqna}
+		set ${qnaTitle} = #{qnaTitle}, ${qnaContent} = #{qnaContent}
+		where ${qnaNo} = #{qnaNo}
+	</update>
+
+	<delete id="delete">
+		delete from ${sqna}
+		where ${qnaNo} = #{qnaNo}
+	</delete>
+
+	<select id="total_count" resultType="Integer">
+		select count(*) total_cnt from ${sqna}
+	</select>
+
+	<select id="paging" resultType="QnaVO">  <!--페이징처리 -->
+		select b.${qnaNo}, b.${qnaTitle}, b.${qnaContent}, b.${userid}, b.${qnaCdate} from(
+				select rownum rn, a.* from(
+					select * from ${sqna} order by ${qnaNo} desc
+				)a
+		)b where rn between #{start} and #{end}
+	</select>
+	<!-- 
+	#{start} : getStart()
+	#{end} : getEnd()
+	 -->
+	 
+	 <select id = "select_by_userid" resultType="QnaVO">
+	 		select * from ${sqna}
+	 		where ${userid} like #{userid}
+	 </select>
+	 
+	 <select id="select_by_qnaTitle_qnaContent" resultType = "QnaVO">
+	 		select * from ${sqna}
+	 		where ${qnaTitle} like #{keyword} or
+	 				${qnaContent} like #{keyword}
+	 				order by #{qnaNo} desc
+	 </select>
+	 
+	 <update id="update_reply_count">
+		update ${sqna}
+		set ${replyCount} = ${replyCount} + #{amount}
+		where ${qnaNo} = #{qnaNo}
+	</update>
+	
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

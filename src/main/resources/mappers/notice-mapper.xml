@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.spring.ex06.NoticeMapper">
+	<!-- namespace : 주로 dao 클래스의 sqlSession과 연결하기 위한 키로 사용 -->
+	<!-- DB 쿼리 작성 -->
+	<!-- id : 주로 dao 클래스의 sqlSession의 함수와 연결하기 위해 사용 -->
+
+	<!-- ${key 이름} : mybatis-config.xml의 property - name과 매칭. DB 테이블의 열 
+	#{key 이름} : dao 클래스의 sqlSession에서 전송받은 데이터(입력받은 데이터). (쿼리에서 ?부분) -->
+
+	<!-- mapper 태그 <insert>,<select>,<update>,<delete> dao - sqlSession의 함수(insert, 
+		selectOne, selectList, update, delete)에 맞게 수행되는 태그 -->
+
+	<insert id="insert">
+		insert into ${snotice} (${noticeTitle},${noticeContent},${userid})
+		values (#{noticeTitle,jdbcType=VARCHAR},#{noticeContent,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="select_all" resultType="NoticeVO">
+		select * from ${snotice}
+		order by ${noticeNo} desc
+	</select>
+
+	<select id="select_by_notice_no" resultType="NoticeVO">
+		select * from ${snotice} where ${noticeNo} = #{noticeNo}
+	</select>
+
+	<update id="update">
+		update ${snotice}
+		set ${noticeTitle} = #{noticeTitle}, ${noticeContent} = #{noticeContent}
+		where ${noticeNo} = #{noticeNo}
+	</update>
+
+	<delete id="delete">
+		delete from ${snotice}
+		where ${noticeNo} = #{noticeNo}
+	</delete>
+
+	<select id="total_count" resultType="Integer">
+		select count(*) total_cnt from ${snotice}
+	</select>
+
+	<select id="paging" resultType="NoticeVO">  <!--페이징처리 -->
+		select b.${noticeNo}, b.${noticeTitle}, b.${noticeContent}, b.${userid}, b.${noticeCdate} from(
+				select rownum rn, a.* from(
+					select * from ${snotice} order by ${noticeNo} desc
+				)a
+		)b where rn between #{start} and #{end}
+	</select>
+	<!-- 
+	#{start} : getStart()
+	#{end} : getEnd()
+	 -->
+	 
+	 <select id = "select_by_userid" resultType="NoticeVO">
+	 		select * from ${snotice}
+	 		where ${userid} like #{userid}
+	 </select>
+	 
+	 <select id="select_by_noticeTitle_noticeContent" resultType = "NoticeVO">
+	 		select * from ${snotice}
+	 		where ${noticeTitle} like #{keyword} or
+	 				${noticeContent} like #{keyword}
+	 				order by #{noticeNo} desc
+	 </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
